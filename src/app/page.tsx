@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import DatePicker from "../components/Date";
+import stationCodeToName from '../utils/stationData';
 
 const Page = () => {
   const [stations, setStations] = useState({ from: "", to: "" });
@@ -22,87 +23,93 @@ const Page = () => {
   const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStations((prev) => ({ ...prev, from: e.target.value }));
   };
-
+  
   const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStations((prev) => ({ ...prev, to: e.target.value }));
   };
 
   return (
     <>
-      <div className="p-5">
-        <p className="flex justify-center text-2xl font-extrabold">Trains</p>
-        <div className="border-4">
-          <div className="flex justify-center p-3 space-x-3">
-            <p className="border-2 p-2">
-              From :
+     <div className="p-6 lg:mx-auto lg:max-w-screen-lg">
+        <p className="text-center text-2xl font-semibold p-2">Danish's Indian Railway</p>
+        <div className="border-4 p-5 rounded-md">
+          <div className="flex flex-col lg:flex-row justify-center p-3 space-y-3 lg:space-y-0 lg:space-x-3 rounded-md">
+            <div className="flex-grow lg:w-1/3">
+              <label className="block mb-2">From:</label>
               <input
-                className="bg-slate-100 border-none p-2"
+                className="w-full bg-red-100 border-none p-2 rounded-md"
                 type="text"
                 placeholder="STSN"
                 value={stations.from}
                 onChange={handleFromChange}
               />
-            </p>
-            <p className="border-2 p-2">
-              To :
+            </div>
+            <div className="flex-grow lg:w-1/3">
+              <label className="block mb-2">To:</label>
               <input
-                className="bg-slate-100 border-none p-2"
+                className="w-full bg-red-100 border-none p-2 rounded-md"
                 type="text"
                 placeholder="STSN"
                 value={stations.to}
                 onChange={handleToChange}
               />
-            </p>
-            <DatePicker seletedDate={date} setDate={setDate} />
+            </div>
+            <div className="">
+              <DatePicker selectedDate={date} setDate={setDate} />
+            </div>
           </div>
           <div className="flex justify-center items-center">
-          <button className="bg-red-500" onClick={handleSearch}>
-            Search
-          </button>
-        </div>
-          <div>
-            <p className="text-center">Available Trains:</p>
+            <button className="bg-red-500 px-4 py-2 rounded-lg" onClick={handleSearch}>
+              Search
+            </button>
           </div>
         </div>
       </div>
-      <div className="">
-      {trains.length ? (
-  <table className="border-2 m-2">
-    <thead className="text-center p-3 border-2">
-      <tr>
-        <th></th>
-        <th>Train No</th>
-        <th>Train Name</th>
-        <th>From</th>
-        <th>Dep. Time</th>
-        <th>To</th>
-        <th>Arr. Time</th>
-        <th>Duration</th>
-      </tr>
-    </thead>
-    <tbody>
-      {trains.map((train: any, index: number) => (
-        <tr key={train?.train_base?.train_no}>
-          <th>
-          <p>{`${index + 1}`}</p>
-          </th>
-          <td className="text-center">
-            <p className="">{train?.train_base?.train_no}</p>
-          </td>
-          <td className="pl-7">{` ${train?.train_base?.train_name}`}</td>
-          <td className="text-center">{`${train?.train_base?.from_stn_name} (${train?.train_base?.from_stn_code})`}</td>
-          <td className="text-center">{train?.train_base?.from_time}</td>
-          <td className="text-center">{`${train?.train_base?.to_stn_name} (${train?.train_base?.to_stn_code})`}</td>
-          <td className="text-center">{train?.train_base?.to_time}</td>
-          <td className="text-center">{train?.train_base?.travel_time}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-) : (
-  <h1>No Data Available</h1>
-)}
-      </div>
+
+      <div className="lg:mx-auto lg:max-w-screen-lg">
+  <div>
+    <p className="text-center text-2xl font-bold mb-4">Available Trains:</p>
+  </div>
+  {trains.length ? (
+    <div className="overflow-x-auto px-4 lg:px-7">
+      <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-md">
+        <thead className="bg-red-200 text-center text-sm">
+          <tr>
+            <th className="py-2"></th>
+            <th className="py-2">Train No</th>
+            <th className="py-2">Train Name</th>
+            <th className="py-2">From</th>
+            <th className="py-2">Dep. Time</th>
+            <th className="py-2">To</th>
+            <th className="py-2">Arr. Time</th>
+            <th className="py-2">Duration</th>
+          </tr>
+        </thead>
+        <tbody className="text-center text-sm">
+          {trains.map((train: any, index: number) => (
+            <tr key={train?.train_base?.train_no} className={index % 2 === 0 ? 'bg-red-100' : 'bg-white'}>
+              <td className="py-2">
+                <p>{`${index + 1}`}</p>
+              </td>
+              <td className="py-2">
+                <p className="">{train?.train_base?.train_no}</p>
+              </td>
+              <td className="py-2">{` ${train?.train_base?.train_name}`}</td>
+              <td className="py-2">{`${train?.train_base?.from_stn_name} (${train?.train_base?.from_stn_code})`}</td>
+              <td className="py-2">{train?.train_base?.from_time}</td>
+              <td className="py-2">{`${train?.train_base?.to_stn_name} (${train?.train_base?.to_stn_code})`}</td>
+              <td className="py-2">{train?.train_base?.to_time}</td>
+              <td className="py-2">{train?.train_base?.travel_time}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <h1 className="text-center text-lg font-semibold mt-16">Please Enter station code</h1>
+  )}
+</div>
+
     </>
   );
 };

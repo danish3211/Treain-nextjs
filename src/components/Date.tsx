@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import moment from 'moment';
 
-export default function DatePickerComponent({ setDate}:any){
+export default function DatePickerComponent({ setDate }: any) {
   const [selectedDate, setSelectedDate] = useState(undefined);
   const handleChange = (date: any) => {
     setSelectedDate(date);
@@ -11,14 +11,14 @@ export default function DatePickerComponent({ setDate}:any){
   };
 
   return (
-    <div className="flex justify-center border-2 p-2 space-x-3">
-      <p className="p-2">Departure</p>
+    <div className="flex-grow">
+      <p className="block mb-2">Dept.</p>
       <DatePicker
-        className="bg-slate-100 border-none p-2"
+        className="w-full bg-red-100 border-none p-2 rounded-md lg:w-full"
         selected={selectedDate}
         value={selectedDate}
         onChange={handleChange}
-        />
+      />
     </div>
   );
 }
