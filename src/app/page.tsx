@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import DatePicker from "../components/Date";
-import stationCodeToName from '../utils/stationData';
 
 const Page = () => {
   const [stations, setStations] = useState({ from: "", to: "" });
@@ -11,7 +10,7 @@ const Page = () => {
   const handleSearch = async () => {
     try {
       const response = await fetch(
-        `https://indian-railway-api.cyclic.app/trains/betweenStations/?from=${stations?.from}&to=${stations?.to}&date=${date}`
+        `https://indian-railway-api.cyclic.app/trains/betweenStations/?from=${stations?.from}&to=${stations?.to}`
       );
       const result = await response.json();
       setTrains(() => result?.data);
@@ -31,7 +30,7 @@ const Page = () => {
   return (
     <>
      <div className="p-6 lg:mx-auto lg:max-w-screen-lg">
-        <p className="text-center text-2xl font-semibold p-2">Danish's Indian Railway</p>
+        <p className="text-center text-2xl font-semibold p-2">D R C T C</p>
         <div className="border-4 p-5 rounded-md">
           <div className="flex flex-col lg:flex-row justify-center p-3 space-y-3 lg:space-y-0 lg:space-x-3 rounded-md">
             <div className="flex-grow lg:w-1/3">
@@ -106,7 +105,10 @@ const Page = () => {
       </table>
     </div>
   ) : (
+    <>
     <h1 className="text-center text-lg font-semibold mt-16">Please Enter station code</h1>
+    <p className="text-center text-xl mt-9 text-red-600 font-extrabold">make sure you enter correct station code</p>
+    </>
   )}
 </div>
 
